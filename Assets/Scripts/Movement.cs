@@ -43,47 +43,15 @@ public class Movement : MonoBehaviour
         ProcessRotation();
     }
 
-    void ProcessThrust()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot (mainEngine);
-            }
-
-            if (!mainBooster.isPlaying)
-            {
-                mainBooster.Play();
-            }
-        }
-        else
-        {
-            audioSource.Stop();
-            mainBooster.Stop();
-        }
-    }
-
     void ProcessRotation()
     {
         if (Input.GetKey(KeyCode.A))
         {
-            ApplyRoattion (rotationThrust);
-
-            if (!leftBooster.isPlaying)
-            {
-                leftBooster.Play();
-            }
+            RotateLeft();
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            ApplyRoattion(-rotationThrust);
-
-            if (!rightBooster.isPlaying)
-            {
-                rightBooster.Play();
-            }
+            RotateRight();
         }
         else
         {
@@ -92,7 +60,54 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void ApplyRoattion(float rotationThisFrame)
+    void ProcessThrust()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            StartThrusting();
+        }
+        else
+        {
+            audioSource.Stop();
+            mainBooster.Stop();
+        }
+    }
+
+    void StartThrusting()
+    {
+        rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot (mainEngine);
+        }
+
+        if (!mainBooster.isPlaying)
+        {
+            mainBooster.Play();
+        }
+    }
+
+    void RotateRight()
+    {
+        ApplyRoattion(-rotationThrust);
+
+        if (!rightBooster.isPlaying)
+        {
+            rightBooster.Play();
+        }
+    }
+
+    void RotateLeft()
+    {
+        ApplyRoattion (rotationThrust);
+
+        if (!leftBooster.isPlaying)
+        {
+            leftBooster.Play();
+        }
+    }
+
+    void ApplyRoattion(float rotationThisFrame)
     {
         rb.freezeRotation = true; //freezing rotation so we can manually rotate
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
