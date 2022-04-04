@@ -18,6 +18,15 @@ public class Movement : MonoBehaviour
     [SerializeField]
     AudioClip mainEngine;
 
+    [SerializeField]
+    ParticleSystem mainBooster;
+
+    [SerializeField]
+    ParticleSystem leftBooster;
+
+    [SerializeField]
+    ParticleSystem rightBooster;
+
     bool isAlive;
 
     // Start is called before the first frame update
@@ -43,10 +52,16 @@ public class Movement : MonoBehaviour
             {
                 audioSource.PlayOneShot (mainEngine);
             }
+
+            if (!mainBooster.isPlaying)
+            {
+                mainBooster.Play();
+            }
         }
         else
         {
             audioSource.Stop();
+            mainBooster.Stop();
         }
     }
 
@@ -55,10 +70,25 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             ApplyRoattion (rotationThrust);
+
+            if (!leftBooster.isPlaying)
+            {
+                leftBooster.Play();
+            }
         }
         else if (Input.GetKey(KeyCode.D))
         {
             ApplyRoattion(-rotationThrust);
+
+            if (!rightBooster.isPlaying)
+            {
+                rightBooster.Play();
+            }
+        }
+        else
+        {
+            rightBooster.Stop();
+            leftBooster.Stop();
         }
     }
 
